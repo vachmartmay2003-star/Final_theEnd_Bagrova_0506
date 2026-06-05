@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Свадебные букеты и оформление — Bagrova Flowers</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FDFAF8'/%3E%3Cg fill='%23D4A0A0'%3E%3Cellipse cx='16' cy='9' rx='3.5' ry='6'/%3E%3Cellipse cx='16' cy='23' rx='3.5' ry='6'/%3E%3Cellipse cx='9' cy='16' rx='6' ry='3.5'/%3E%3Cellipse cx='23' cy='16' rx='6' ry='3.5'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='3' fill='%238B3A3A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ─── PALETTE ─── */
+:root{
+  --bg:       #FDFAF8;   /* тёплый почти-белый */
+  --bg2:      #F8F3F0;   /* чуть темнее */
+  --bg3:      #F3EBE8;   /* секции с акцентом */
+  --rose:     #D4A0A0;   /* пыльная роза */
+  --rose-d:   #B87878;   /* роза темнее */
+  --rose-p:   #FAF3F2;   /* очень светлая роза */
+  --burg:     #8B3A3A;   /* бордо */
+  --burg-l:   #A85050;   /* бордо светлее */
+  --green:    #7A8C6E;   /* приглушённый зелёный */
+  --green-l:  #A8B89A;   /* зелёный светлый */
+  --ink:      #3D2B2B;   /* почти-чёрный с лёгким розовым оттенком — для текста */
+  --ink-mid:  #7A5C5C;   /* средний текст */
+  --ink-l:    #B09090;   /* лёгкий текст */
+  --border:   rgba(180,120,120,0.15);
+  --glass:    rgba(253,250,248,0.65);
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.65;overflow-x:hidden}
+
+/* ─── PETALS (background ambient) ─── */
+#petals-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;opacity:0.35;
+}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .85s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 60px;
+  background:rgba(253,250,248,0.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo img{height:36px;width:auto;display:block}
+.nav-links{display:flex;gap:22px;align-items:center}
+.nav-a{font-size:13px;letter-spacing:0.04em;color:var(--ink-mid);text-decoration:none;transition:color .2s;font-weight:300}
+.nav-a:hover{color:var(--ink)}
+.nav-btn{
+  padding:10px 26px;
+  background:var(--burg);
+  color:#fff;
+  font-size:11px;letter-spacing:0.13em;text-transform:uppercase;
+  text-decoration:none;font-weight:400;
+  transition:background .25s;
+  border:none;cursor:pointer;
+}
+.nav-btn:hover{background:var(--burg-l)}
+.nav-tg{
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);border-radius:50%;
+  color:var(--ink-mid);text-decoration:none;transition:all .2s;
+}
+.nav-tg:hover{border-color:var(--rose);color:var(--burg);background:var(--rose-p)}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  padding-top:64px;position:relative;z-index:2;
+}
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 52px 80px 60px;
+}
+.hero-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;letter-spacing:0.26em;text-transform:uppercase;
+  color:var(--rose-d);margin-bottom:20px;font-weight:400;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(48px,5vw,78px);line-height:1.04;
+  color:var(--ink);margin-bottom:16px;font-weight:300;
+}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(17px,1.9vw,23px);color:var(--ink-mid);
+  margin-bottom:22px;line-height:1.4;font-weight:400;
+}
+.hero-rule{width:44px;height:1px;background:linear-gradient(90deg,var(--rose),var(--green-l));margin:0 0 22px}
+.hero-desc{
+  font-size:14.5px;color:var(--ink-mid);max-width:360px;
+  margin-bottom:44px;line-height:1.85;font-weight:300;
+}
+/* ─── BUTTONS ─── */
+.btn-burg{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:14px 34px;
+  background:var(--burg);color:#fff;
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  text-decoration:none;font-weight:400;
+  transition:background .3s;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.btn-burg:hover{background:var(--burg-l)}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:13px 32px;
+  background:transparent;color:var(--burg);
+  border:1px solid var(--rose);
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  text-decoration:none;font-weight:400;
+  transition:all .25s;font-family:'Inter',sans-serif;
+}
+.btn-outline:hover{background:var(--rose-p);border-color:var(--rose-d)}
+
+/* HERO RIGHT */
+.hero-right{position:relative;overflow:hidden;background:var(--bg3)}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.hero-right::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(253,250,248,0.1) 0%,transparent 30%);
+}
+/* GIFT BADGE */
+.hero-badge{
+  position:absolute;bottom:40px;left:0;z-index:10;
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(253,250,248,0.78);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(212,160,160,0.4);
+  padding:14px 18px;max-width:260px;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--rose-d);flex-shrink:0;margin-top:5px}
+.badge-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--ink);line-height:1.4;font-weight:500;margin-bottom:3px}
+.badge-sub{font-size:12px;color:var(--burg);font-weight:300;letter-spacing:0.02em}
+
+/* ─── SECTIONS ─── */
+.sec{padding:96px 60px;position:relative;z-index:2;content-visibility:auto;contain-intrinsic-size:1000px}
+.sec-white{background:#fff}
+.sec-bg{background:var(--bg)}
+.sec-bg2{background:var(--bg2)}
+.sec-rose{background:var(--rose-p)}
+.cta,.form-sec,.rev-sec,footer{content-visibility:auto;contain-intrinsic-size:900px}
+
+.tag{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;color:var(--rose-d);margin-bottom:10px;font-weight:400}
+.h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.2vw,46px);color:var(--ink);line-height:1.1;margin-bottom:12px;font-weight:300}
+.h2 em{font-style:italic;color:var(--burg)}
+.rule{width:40px;height:1px;background:linear-gradient(90deg,var(--rose-d),var(--green-l));margin:14px 0 20px}
+.desc{font-size:14.5px;color:var(--ink-mid);max-width:500px;line-height:1.85;font-weight:300}
+
+/* ─── SLIDER ─── */
+.slider-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:48px;gap:24px;flex-wrap:wrap}
+.gift-glass{
+  background:rgba(253,250,248,0.75);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(212,160,160,0.28);
+  padding:20px 22px;flex-shrink:0;max-width:210px;
+}
+.gift-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-d);margin-bottom:7px;font-weight:400}
+.gift-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ink);margin-bottom:4px;line-height:1.3;font-weight:400}
+.gift-sub{font-size:12.5px;color:var(--ink-mid);line-height:1.55;font-weight:300}
+
+.slider-wrap{overflow:hidden}
+.slider-track{display:flex;gap:22px;transition:transform .7s cubic-bezier(.22,.61,.36,1);will-change:transform}
+.card{flex:0 0 calc(33.33% - 15px);min-width:0;cursor:default}
+.card-img{width:100%;aspect-ratio:3/4;overflow:hidden;background:var(--bg3);margin-bottom:14px}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .55s}
+.card:hover .card-img img{transform:scale(1.06)}
+.card-wide{aspect-ratio:4/3}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ink);margin-bottom:4px;font-weight:400}
+.card-price{font-size:13.5px;color:var(--ink-mid);font-weight:300}
+
+.slider-btns{display:flex;gap:10px;margin-top:34px}
+.sbtn{
+  width:54px;height:54px;
+  border:1.5px solid rgba(212,160,160,0.4);
+  background:rgba(253,250,248,0.7);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--ink-mid);transition:all .25s;
+}
+.sbtn:hover{border-color:var(--rose-d);color:var(--burg);background:rgba(212,160,160,0.12)}
+.sbtn:active{transform:scale(0.94)}
+
+/* ─── GALLERY 4×2 ─── */
+.gal{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(2,260px);
+  gap:14px;
+  margin-top:50px;
+}
+.gi{
+  overflow:hidden;
+  position:relative;
+  cursor:zoom-in;
+  border:2px solid rgba(212,160,160,0.28);
+  padding:8px;
+  background:rgba(255,255,255,0.6);
+  box-shadow:0 8px 24px rgba(61,43,43,0.05);
+}
+.gi img{width:100%;height:100%;object-fit:cover;display:block}
+.gi::after{content:'';position:absolute;inset:8px;background:linear-gradient(to top,rgba(61,43,43,0.12) 0%,transparent 55%);opacity:0;transition:opacity .25s;pointer-events:none}
+.gi:hover::after{opacity:1}
+
+/* ─── IMAGE ZOOM MODAL ─── */
+.zoom-modal{
+  position:fixed;
+  inset:0;
+  z-index:1200;
+  display:none;
+}
+.zoom-modal.open{display:block}
+.zoom-backdrop{
+  position:absolute;inset:0;
+  background:rgba(30,20,20,0.72);
+  backdrop-filter:blur(10px);
+}
+.zoom-panel{
+  position:relative;
+  z-index:1;
+  width:min(1080px,calc(100vw - 32px));
+  margin:30px auto;
+  background:#fff;
+  border:1px solid rgba(212,160,160,0.25);
+  box-shadow:0 30px 100px rgba(0,0,0,0.25);
+  padding:18px;
+  border-radius:18px;
+}
+.zoom-close{
+  position:absolute;top:10px;right:12px;
+  width:40px;height:40px;
+  border:1px solid rgba(180,120,120,0.2);
+  background:#fff;
+  font-size:24px;
+  color:var(--ink-mid);
+  cursor:pointer;
+  line-height:1;
+}
+.zoom-stage{
+  position:relative;
+  height:min(72vh,780px);
+  overflow:hidden;
+  background:var(--bg);
+  touch-action:none;
+  cursor:grab;
+}
+.zoom-stage:active{cursor:grabbing}
+.zoom-stage img{
+  position:absolute;
+  left:50%;top:50%;
+  max-width:none;
+  max-height:none;
+  transform:translate(-50%,-50%) scale(1);
+  transform-origin:center center;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+.zoom-controls{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:14px;
+  flex-wrap:wrap;
+  color:var(--ink-mid);
+  font-size:13px;
+}
+.zoom-controls input[type="range"]{flex:1;min-width:200px}
+.zoom-reset{
+  border:1px solid rgba(180,120,120,0.2);
+  background:var(--rose-p);
+  color:var(--burg);
+  padding:10px 16px;
+  cursor:pointer;
+}
+
+/* ─── PROCESS ─── */
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:52px}
+.proc-num{font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--rose);line-height:1;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(212,160,160,0.25);font-weight:300}
+.proc-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--ink);margin-bottom:7px;font-weight:400}
+.proc-text{font-size:13.5px;color:var(--ink-mid);line-height:1.75;font-weight:300}
+
+/* ─── CTA STRIP ─── */
+.cta{
+  background:linear-gradient(135deg,#3D2B2B 0%,#5C3838 50%,#3D2B2B 100%);
+  padding:72px 60px;
+  display:flex;align-items:center;gap:0;
+  position:relative;overflow:hidden;z-index:2;
+}
+.cta-left{flex:1;min-width:240px}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,42px);color:var(--bg);margin-bottom:10px;font-weight:300;line-height:1.18}
+.cta-sub{font-size:14px;color:rgba(253,250,248,0.5);font-weight:300}
+.cta-discount{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--rose);margin-top:14px;font-weight:300}
+.cta-phone{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2.2vw,30px);color:var(--bg);text-decoration:none;transition:color .2s;font-weight:300;display:block;margin-top:18px}
+.cta-phone:hover{color:var(--rose)}
+
+
+/* ─── FORM ─── */
+.form-sec{padding:96px 60px;background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;position:relative;z-index:2}
+.contacts{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.contact-row{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--ink-mid);text-decoration:none;transition:color .2s;font-weight:300}
+.contact-row:hover{color:var(--ink)}
+.c-icon{width:36px;height:36px;border:1px solid rgba(212,160,160,0.28);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--rose-d);flex-shrink:0}
+.soc-links{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.soc-link{display:flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid rgba(212,160,160,0.28);color:var(--ink-mid);text-decoration:none;font-size:13px;font-weight:300;transition:all .25s}
+.soc-link:hover{border-color:var(--rose-d);color:var(--burg);background:var(--rose-p)}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--ink);margin-bottom:26px;font-weight:300}
+.fg{margin-bottom:15px}
+.flabel{display:block;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-l);margin-bottom:7px;font-weight:400}
+.finput,.fselect,.ftextarea{
+  width:100%;padding:13px 15px;
+  border:1px solid rgba(180,120,120,0.2);
+  background:#fff;
+  font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);
+  outline:none;transition:border-color .2s;
+  -webkit-appearance:none;border-radius:0;font-weight:300;
+}
+.finput:focus,.fselect:focus,.ftextarea:focus{border-color:var(--rose-d)}
+.ftextarea{resize:vertical;min-height:90px}
+.fselect{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23B09090' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.date-row{display:grid;grid-template-columns:1fr 1.1fr .9fr;gap:10px}
+.fdate{min-width:0}
+.ffile{display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px dashed rgba(212,160,160,0.35);cursor:pointer;font-size:13px;color:var(--ink-mid);transition:background .2s;font-weight:300}
+.ffile:hover{background:var(--rose-p)}
+.ffile-in{display:none}
+.fsubmit{
+  width:100%;padding:17px;
+  background:var(--burg);color:#fff;
+  border:none;font-family:'Inter',sans-serif;
+  font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+  cursor:pointer;transition:background .25s;margin-top:6px;font-weight:400;
+}
+.fsubmit:hover{background:var(--burg-l)}
+.fprivacy{font-size:11.5px;color:var(--ink-l);margin-top:12px;line-height:1.55;font-weight:300}
+.fprivacy a{color:var(--rose-d);text-decoration:underline}
+.success{display:none;padding:20px;background:var(--rose-p);border:1px solid rgba(212,160,160,0.3);text-align:center;margin-top:14px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--ink)}
+
+/* ─── REVIEWS ─── */
+.rev-sec{padding:96px 60px;background:#fff;position:relative;z-index:2}
+.rev-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;gap:24px;flex-wrap:wrap}
+.rev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:44px}
+.review-card{background:var(--bg);border:1px solid var(--border);padding:26px 24px 22px}
+.stars{color:var(--rose-d);font-size:14px;letter-spacing:3px;margin-bottom:13px}
+.review-text{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink);line-height:1.68;margin-bottom:16px;font-style:italic;font-weight:300}
+.review-foot{display:flex;justify-content:space-between;font-size:12.5px;font-weight:300}
+.rname{color:var(--ink-mid)}
+.rdate{color:var(--ink-l)}
+
+/* YANDEX BLOCK */
+.ya-block{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:36px 44px;
+  background:var(--rose-p);
+  border:1px solid rgba(212,160,160,0.2);
+  gap:32px;flex-wrap:wrap;
+}
+.ya-text .ya-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--ink);margin-bottom:5px;font-weight:300}
+.ya-text .ya-sub{font-size:13px;color:var(--ink-mid);font-weight:300}
+.ya-widget{flex-shrink:0;transform:scale(1.75);transform-origin:left center;display:block;margin-right:140px;margin-left:-30px}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--ink);padding:40px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;position:relative;z-index:2;
+}
+.fl{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--bg);letter-spacing:0.07em;text-decoration:none;font-weight:300}
+.flinks{display:flex;gap:20px;flex-wrap:wrap}
+.flinks a{font-size:12.5px;color:rgba(253,250,248,0.38);text-decoration:none;transition:color .2s;font-weight:300}
+.flinks a:hover{color:var(--bg)}
+.fcopy{font-size:13px;color:rgba(253,250,248,0.45);width:100%;font-weight:300;text-align:center;margin-top:12px}
+
+
+/* ─── COOKIE BANNER ─── */
+.cookie-banner{
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%) translateY(20px);
+  width:min(760px,calc(100vw - 32px));
+  z-index:1400;
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 18px;
+  background:rgba(253,250,248,0.96);
+  border:1px solid rgba(212,160,160,0.28);
+  box-shadow:0 20px 60px rgba(61,43,43,0.16);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.cookie-banner.show{
+  display:flex;
+  animation:cookieIn .35s ease forwards;
+}
+.cookie-banner__text{
+  font-size:13px;
+  line-height:1.6;
+  color:var(--ink-mid);
+  font-weight:300;
+}
+.cookie-banner__btn{
+  flex-shrink:0;
+  border:none;
+  background:var(--burg);
+  color:#fff;
+  padding:12px 18px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  font-weight:400;
+}
+.cookie-banner__btn:hover{background:var(--burg-l)}
+@keyframes cookieIn{
+  from{opacity:0;transform:translateX(-50%) translateY(20px)}
+  to{opacity:1;transform:translateX(-50%) translateY(0)}
+}
+@media(max-width:640px){
+  .cookie-banner{
+    flex-direction:column;
+    align-items:stretch;
+    text-align:center;
+  }
+  .cookie-banner__btn{width:100%}
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  nav{padding:12px 16px}
+  .nav-links .nav-a{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-right{display:block;min-height:320px}
+  .hero-left{padding:80px 20px 48px}
+  .hero-title{font-size:clamp(38px,10vw,56px)}
+  .hero-desc{max-width:100%}
+  .hero-badge{max-width:240px;left:0}
+  .btn-burg{white-space:nowrap;justify-content:center;width:100%;font-size:10px;padding:14px 18px}
+  .sec{padding:52px 20px}
+  .form-sec{padding:52px 20px;grid-template-columns:1fr;gap:40px}
+  .rev-sec{padding:52px 20px}
+  .slider-head{flex-direction:column;gap:20px}
+  .slider-head .btn-outline{width:100%;justify-content:center}
+  .card{flex:0 0 85%}
+  .proc-grid{grid-template-columns:1fr;gap:24px}
+  .gal{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,140px)}
+  .rev-grid{grid-template-columns:1fr}
+  .cta{padding:48px 20px}
+  .cta-title{font-size:clamp(22px,7vw,32px)}
+  .ya-block{flex-direction:column;text-align:center;padding:28px 20px;gap:20px}
+  .ya-widget{transform:scale(1.2);transform-origin:center center;margin:20px auto 32px}
+  footer{padding:24px 20px;flex-direction:column;gap:14px;text-align:center}
+  .flinks{justify-content:center}
+  .soc-links{flex-direction:column}
+  .soc-link{justify-content:center}
+  .gift-glass{max-width:100%;width:100%}
+  .sbtn{width:46px;height:46px;font-size:17px}
+  .form-title{font-size:22px}
+  h2.h2{font-size:clamp(34px,9vw,48px)}
+}
+@media(max-width:480px){
+  .hero-title{font-size:clamp(32px,10vw,46px)}
+  .gal{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,120px)}
+  .card{flex:0 0 90%}
+}
+</style>
+</head>
+<body>
+
+<canvas id="petals-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  
+<a href="https://bagrovaflowers.ru/" style="display:flex;align-items:center;text-decoration:none">
+  <div style="font-family:'Cormorant Garamond',serif;color:#3D2B2B;text-transform:uppercase;line-height:0.95;letter-spacing:0.18em">
+    <div style="font-size:22px;font-weight:400;">Bagrova</div>
+    <div style="font-size:20px;font-weight:300;margin-top:6px;">Flowers</div>
+  </div>
+</a>
+
+  <div class="nav-links">
+    <a href="https://bagrovaflowers.ru/" target="_blank" class="nav-a">Основной сайт</a>
+    <a href="#form" class="nav-btn">Оставить заявку</a>
+    <a href="https://t.me/bagrovaflowers" target="_blank" class="nav-tg" aria-label="Telegram">
+      <svg width="14" height="12" viewBox="0 0 16 14" fill="none"><path d="M15 1L1 6l4.5 1.5L13 3l-6 6 .5 4 2.5-2.5 3.5 2.5L15 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" fill="none"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Свадебная флористика · Одинцово · Москва</p>
+    <h1 class="hero-title">Ваша свадьба<br>в цветах</h1>
+    <p class="hero-sub">От букета невесты до оформления зала. Всё в одном месте<!--torjества</p>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">Создаём свадебную флористику с вниманием к каждой детали. Букет невесты, бутоньерка жениха, оформление зала — всё в едином стиле вашей свадьбы.</p>
+    <a href="#form" class="btn-burg">Обсудить свадьбу &nbsp;→</a>
+  </div>
+  <div class="hero-right">
+    <img class="hero-img" fetchpriority="high" decoding="async" src="img/photo_01_d936a32a.jpg" alt="Свадебный букет">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      <div>
+        <div class="badge-title">Бутоньерка жениха в стиль букета — в подарок</div>
+        <div class="badge-sub">при заказе букета невесты</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOUQUETS -->
+<section class="sec sec-white">
+  <div class="slider-head reveal">
+    <div>
+      <p class="tag">Коллекция</p>
+      <h2 class="h2">Букет <em>невесты</em></h2>
+      <div class="rule"></div>
+      <p class="desc">Каждый букет создаётся индивидуально — под образ невесты, стиль свадьбы и сезон.</p>
+    </div>
+    <div class="gift-glass reveal">
+      <div class="gift-label">В подарок</div>
+      <div class="gift-title">Бутоньерка жениха</div>
+      <div class="gift-sub">в стиль вашего букета невесты — бесплатно</div>
+    </div>
+  </div>
+  <div class="slider-wrap">
+    <div class="slider-track" id="bt"><div class="card"><div class="card-img"><img src="img/photo_02_584f2685.jpg" alt="Зефирная любовь" loading="lazy" decoding="async"></div><div class="card-name">Зефирная любовь</div><div class="card-price">10 400 ₽</div></div>
+<div class="card"><div class="card-img"><img src="img/photo_03_f4be0919.jpg" alt="Нежность незабудки" loading="lazy" decoding="async"></div><div class="card-name">Нежность незабудки</div><div class="card-price">11 300 ₽</div></div>
+<div class="card"><div class="card-img"><img src="img/photo_04_aa248825.jpg" alt="Летняя роса" loading="lazy" decoding="async"></div><div class="card-name">Летняя роса</div><div class="card-price">8 900 ₽</div></div>
+<div class="card"><div class="card-img"><img src="img/photo_05_164d188f.jpg" alt="Ароматная маттиола" loading="lazy" decoding="async"></div><div class="card-name">Ароматная маттиола</div><div class="card-price">8 100 ₽</div></div>
+<div class="card"><div class="card-img"><img src="img/photo_06_6b57f671.jpg" alt="Ароматные пионовидные розы" loading="lazy" decoding="async"></div><div class="card-name">Ароматные пионовидные розы</div><div class="card-price">9 800 ₽</div></div>
+<div class="card"><div class="card-img"><img src="img/photo_07_61059bf4.jpg" alt="Кустовые сливочные розы" loading="lazy" decoding="async"></div><div class="card-name">Кустовые сливочные розы</div><div class="card-price">10 400 ₽</div></div>
+<div class="card"><div class="card-img"><img src="img/photo_08_2b270a5c.jpg" alt="Оливковая ветвь" loading="lazy" decoding="async"></div><div class="card-name">Оливковая ветвь</div><div class="card-price">12 970 ₽</div></div>
+</div>
+  </div>
+  <div class="slider-btns">
+    <button class="sbtn" id="bp" aria-label="Назад">←</button>
+    <button class="sbtn" id="bn" aria-label="Вперёд">→</button>
+  </div>
+</section>
+
+<!-- DECOR -->
+<section class="sec sec-bg2">
+  <div class="slider-head reveal">
+    <div>
+      <p class="tag">Услуги</p>
+      <h2 class="h2">Оформление <em>торжества</em></h2>
+      <div class="rule"></div>
+      <p class="desc">Флористические арки, композиции, зонирование — в едином стиле вашего праздника.</p>
+    </div>
+    <a href="#form" class="btn-outline reveal" style="align-self:flex-end;flex-shrink:0">Обсудить декор &nbsp;→</a>
+  </div>
+  <div class="slider-wrap">
+    <div class="slider-track" id="dt"><div class="card"><div class="card-img card-wide"><img src="img/photo_09_4eb6e612.jpg" alt="Свадебный вечер" loading="lazy" decoding="async"></div><div class="card-name">Свадебный вечер</div></div>
+<div class="card"><div class="card-img card-wide"><img src="img/photo_10_6daa74e7.jpg" alt="Свадьба в рыбном ресторане" loading="lazy" decoding="async"></div><div class="card-name">Свадьба в рыбном ресторане</div></div>
+<div class="card"><div class="card-img card-wide"><img src="img/photo_11_3399a3a1.jpg" alt="Свадьба в гольф-клубе" loading="lazy" decoding="async"></div><div class="card-name">Свадьба в гольф-клубе</div></div>
+<div class="card"><div class="card-img card-wide"><img src="img/photo_12_aafd049b.jpg" alt="Оформление загородной усадьбы" loading="lazy" decoding="async"></div><div class="card-name">Оформление загородной усадьбы</div></div>
+<div class="card"><div class="card-img card-wide"><img src="img/photo_13_152f26df.jpg" alt="Исторический музей" loading="lazy" decoding="async"></div><div class="card-name">Исторический музей</div></div>
+<div class="card"><div class="card-img card-wide"><img src="img/photo_14_cc291fd6.jpg" alt="Контейнерное озеленение" loading="lazy" decoding="async"></div><div class="card-name">Контейнерное озеленение</div></div>
+</div>
+  </div>
+  <div class="slider-btns">
+    <button class="sbtn" id="dp" aria-label="Назад">←</button>
+    <button class="sbtn" id="dn" aria-label="Вперёд">→</button>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="sec sec-rose">
+  <div class="reveal">
+    <p class="tag">Портфолио</p>
+    <h2 class="h2">Наши <em>работы</em></h2>
+    <div class="rule"></div>
+    <p class="desc">Каждая свадьба неповторима.</p>
+  </div>
+  <div class="gal">
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 1"><img src="img/photo_15_897cc105.jpg" alt="Работа 1" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 2"><img src="img/photo_16_8b4f0ee2.jpg" alt="Работа 2" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 3"><img src="img/photo_17_ec6146a9.jpg" alt="Работа 3" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 4"><img src="img/photo_18_8ae6797e.jpg" alt="Работа 4" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 5"><img src="img/photo_19_b2b48f42.jpg" alt="Работа 5" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 6"><img src="img/photo_20_c3eeb5e6.jpg" alt="Работа 6" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 7"><img src="img/photo_21_81a81c0c.jpg" alt="Работа 7" loading="lazy" decoding="async" decoding="async"></div>
+    <div class="gi" role="button" tabindex="0" aria-label="Увеличить фото 8"><img src="img/photo_22_64c3e4e5.jpg" alt="Работа 8" loading="lazy" decoding="async" decoding="async"></div>
+  </div>
+</section>
+
+<div class="zoom-modal" id="zoomModal" aria-hidden="true">
+  <div class="zoom-backdrop" id="zoomBackdrop"></div>
+  <div class="zoom-panel" role="dialog" aria-modal="true" aria-label="Просмотр фотографии">
+    <button type="button" class="zoom-close" id="zoomClose" aria-label="Закрыть">×</button>
+    <div class="zoom-stage" id="zoomStage">
+      <img id="zoomImage" alt="">
+    </div>
+    <div class="zoom-controls">
+      <span>Приближение</span>
+      <input type="range" id="zoomRange" min="1" max="3" step="0.01" value="1">
+      <button type="button" class="zoom-reset" id="zoomReset">Сброс</button>
+    </div>
+  </div>
+</div>
+<!-- PROCESS -->
+<section class="sec sec-white">
+  <div class="reveal">
+    <p class="tag">Как мы работаем</p>
+    <h2 class="h2">Просто. <em>Красиво.</em> В срок.</h2>
+  </div>
+  <div class="proc-grid">
+    <div class="reveal"><div class="proc-num">01</div><div class="proc-title">Заявка</div><div class="proc-text">Оставьте заявку на сайте или напишите в Telegram. Ответим в течение 15 минут.</div></div>
+    <div class="reveal"><div class="proc-num">02</div><div class="proc-title">Обсуждение</div><div class="proc-text">Узнаём о вашей свадьбе, стиле, предпочтениях и бюджете. Готовим концепцию.</div></div>
+    <div class="reveal"><div class="proc-num">03</div><div class="proc-title">Доставка</div><div class="proc-text">Привозим точно в срок и создаём атмосферу.</div></div>
+    <div class="reveal"><div class="proc-num">04</div><div class="proc-title">Создание</div><div class="proc-text">Подбираем свежие цветы и создаём флористику в день свадьбы.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-left reveal">
+    <div class="cta-title">Обсудим детали<br>вашего торжества?</div>
+    <div class="cta-sub">Оставьте номер — перезвоним в течение 15 минут</div>
+    
+    <a href="tel:+79998033777" class="cta-phone">+7 (999) 803-37-77</a>
+  </div>
+</div>
+
+<!-- FORM -->
+<section class="form-sec" id="form">
+  <div class="reveal">
+    <p class="tag">Контакты</p>
+    <h2 class="h2">Свяжитесь <em>с нами</em></h2>
+    <div class="rule"></div>
+    <p class="desc">Напишите нам — обсудим вашу свадьбу и подготовим предложение под ваш бюджет и стиль.</p>
+    <div class="contacts">
+      <a href="tel:+79998033777" class="contact-row"><div class="c-icon">✆</div>+7 (999) 803-37-77</a>
+      <div class="contact-row"><div class="c-icon">◎</div>Одинцово, мкр. Клубничное Поле, д. 3</div>
+      <a href="https://bagrovaflowers.ru/" target="_blank" class="contact-row"><div class="c-icon">⊕</div>bagrovaflowers.ru</a>
+    </div>
+    <div class="soc-links">
+      <a href="https://t.me/bagrovaflowers" target="_blank" class="soc-link">
+        <svg width="13" height="11" viewBox="0 0 16 14" fill="none"><path d="M15 1L1 6l4.5 1.5L13 3l-6 6 .5 4 2.5-2.5 3.5 2.5L15 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" fill="none"/></svg>
+        Telegram
+      </a>
+      <a href="https://bagrovaflowers.ru/" target="_blank" class="soc-link">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 1.5C5.5 5 5.5 11 8 14.5M8 1.5C10.5 5 10.5 11 8 14.5M1.5 8h13" stroke="currentColor" stroke-width="1.2"/></svg>
+        Основной сайт
+      </a>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="form-title">Оставить заявку</div>
+    <form id="wform">
+      <div class="fg"><label class="flabel" for="nm">Ваше имя</label><input class="finput" type="text" id="nm" name="name" placeholder="Анна" required></div>
+      <div class="fg"><label class="flabel" for="ph">Номер телефона</label><input class="finput" type="tel" id="ph" name="phone" placeholder="+7 (___) ___-__-__" required></div>
+      <div class="fg"><label class="flabel" for="sv">Интересующая услуга</label>
+        <select class="fselect" id="sv" name="service" required>
+          <option value="">Выберите услугу</option>
+          <option value="bouquet">Букет невесты</option>
+          <option value="decor">Оформление торжества</option>
+          <option value="both">Букет + Оформление</option>
+        </select>
+      </div>
+      
+      <div class="fg">
+        <label class="flabel">Дата свадьбы</label>
+        <div class="date-row">
+          <select class="fselect fdate" id="dt-day" required>
+            <option value="">День</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+          </select>
+          <select class="fselect fdate" id="dt-month" required>
+            <option value="">Месяц</option>
+            <option value="1">Январь</option>
+            <option value="2">Февраль</option>
+            <option value="3">Март</option>
+            <option value="4">Апрель</option>
+            <option value="5">Май</option>
+            <option value="6">Июнь</option>
+            <option value="7">Июль</option>
+            <option value="8">Август</option>
+            <option value="9">Сентябрь</option>
+            <option value="10">Октябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+          </select>
+          <select class="fselect fdate" id="dt-year" required>
+            <option value="">Год</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
+        <input type="hidden" id="wed-date" name="date" value="">
+      </div>
+      <button type="submit" class="fsubmit">Отправить заявку</button>
+      <p class="fprivacy">Нажимая кнопку, вы соглашаетесь с <a href="https://bagrovaflowers.ru/privacy/" target="_blank">политикой конфиденциальности</a></p>
+    </form>
+    <div class="success" id="succ">✦ Спасибо! Ваша заявка отправлена. Свяжемся в течение 15 минут.</div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="rev-sec">
+  <div class="rev-head reveal">
+    <div>
+      <p class="tag">Отзывы</p>
+      <h2 class="h2">Нам <em>доверяют</em></h2>
+      <div class="rule"></div>
+      <p class="desc">Сотни свадеб — сотни историй, которые нас вдохновляют.</p>
+    </div>
+  </div>
+  <div class="rev-grid"><div class="review-card reveal"><div class="stars">★★★★★</div><p class="review-text">«Заказывала букет невесты — пионовидные розы в нежно-розовой гамме. Всё было идеально: и цветы, и упаковка, и доставка точно в срок. Гости восхищались весь вечер!»</p><div class="review-foot"><span class="rname">Алина К.</span><span class="rdate">Март 2026</span></div></div>
+<div class="review-card reveal"><div class="stars">★★★★★</div><p class="review-text">«Полное оформление зала для свадьбы в усадьбе. Команда учла каждую мелочь, арка получилась сказочная. Фотографии до сих пор не могу пересматривать без слёз — так красиво.»</p><div class="review-foot"><span class="rname">Мария В.</span><span class="rdate">Июнь 2026</span></div></div>
+<div class="review-card reveal"><div class="stars">★★★★★</div><p class="review-text">«Брала букет «Оливковая ветвь» — именно то, что хотела. Стиль бохо, всё свежее и ароматное. Бутоньерку жениху сделали в подарок — приятная неожиданность.»</p><div class="review-foot"><span class="rname">Екатерина Л.</span><span class="rdate">Сентябрь 2026</span></div></div>
+<div class="review-card reveal"><div class="stars">★★★★★</div><p class="review-text">«Оформляли свадьбу в ресторане. Всё продуманно и стильно. Работать с вами — одно удовольствие, уже советуем всем подругам!»</p><div class="review-foot"><span class="rname">Дарья М.</span><span class="rdate">Октябрь 2026</span></div></div>
+</div>
+  <div class="ya-block reveal">
+    <div class="ya-text">
+      <div class="ya-title">Рейтинг на Яндекс Картах</div>
+      <div class="ya-sub">Официальная оценка · Лучшее место 2026</div>
+    </div>
+    <div class="ya-widget">
+      <iframe loading="lazy" decoding="async" src="https://yandex.ru/sprav/widget/rating-badge/67322681589?type=award" width="150" height="50" frameborder="0" style="border:none;display:block"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="https://bagrovaflowers.ru/" class="fl">Bagrova Flowers</a>
+  <div class="flinks">
+    <a href="https://bagrovaflowers.ru/" target="_blank">Основной сайт</a>
+    <a href="https://t.me/bagrovaflowers" target="_blank">Telegram</a>
+    <a href="https://bagrovaflowers.ru/privacy/" target="_blank">Политика конфиденциальности</a>
+  </div>
+  <div class="fcopy">© 2026 Bagrova Flowers · Одинцово, мкр. Клубничное Поле, д. 3</div>
+</footer>
+
+
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Уведомление о cookies">
+  <div class="cookie-banner__text">Этот сайт использует cookie для корректной работы и улучшения сервиса.</div>
+  <button id="cookieAccept" class="cookie-banner__btn" type="button">Принять</button>
+</div>
+
+<script>
+(function(){
+
+/* ── PETALS – ambient background, very subtle ── */
+var pc = document.getElementById('petals-canvas');
+var ctx = pc.getContext('2d');
+var W,H;
+function resize(){ W=pc.width=window.innerWidth; H=pc.height=window.innerHeight; }
+resize(); window.addEventListener('resize',resize);
+
+var COLS=[[212,160,160],[192,128,128],[168,184,154],[212,160,160]];
+var pts=[];
+for(var i=0;i<18;i++) pts.push(makePetal());
+
+function makePetal(){
+  var c=COLS[Math.floor(Math.random()*COLS.length)];
+  return {
+    x:Math.random()*W, y:Math.random()*H,
+    sz:5+Math.random()*10,
+    vx:(Math.random()-0.5)*0.25, vy:0.25+Math.random()*0.45,
+    op:0.06+Math.random()*0.14,
+    ang:Math.random()*Math.PI*2, spin:(Math.random()-0.5)*0.012,
+    wave:Math.random()*Math.PI*2, wamp:0.2+Math.random()*0.35,
+    r:c[0],g:c[1],b:c[2]
+  };
+}
+
+function drawPt(p){
+  ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.ang); ctx.globalAlpha=p.op;
+  ctx.beginPath();
+  ctx.moveTo(0,-p.sz);
+  ctx.bezierCurveTo(p.sz*.5,-p.sz*.4, p.sz*.5,p.sz*.4, 0,p.sz);
+  ctx.bezierCurveTo(-p.sz*.5,p.sz*.4, -p.sz*.5,-p.sz*.4, 0,-p.sz);
+  ctx.fillStyle='rgba('+p.r+','+p.g+','+p.b+',1)'; ctx.fill(); ctx.restore();
+}
+
+function anim(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(function(p){
+    p.x+=p.vx+Math.sin(p.wave)*p.wamp; p.y+=p.vy; p.ang+=p.spin; p.wave+=0.01;
+    if(p.y>H+10){ p.y=-10; p.x=Math.random()*W; }
+    drawPt(p);
+  });
+  requestAnimationFrame(anim);
+}
+anim();
+
+/* ── REVEAL ── */
+var obs=new IntersectionObserver(function(e){
+  e.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); obs.unobserve(en.target); } });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+/* ── SLIDERS ── */
+function initSlider(tid,pid,nid){
+  var tr=document.getElementById(tid);
+  var pv=document.getElementById(pid);
+  var nx=document.getElementById(nid);
+  if(!tr||!pv||!nx) return;
+  var idx=0;
+  var cards=tr.querySelectorAll('.card');
+  var n=cards.length;
+  function vis(){ return window.innerWidth<900?1:3; }
+  function upd(){ tr.style.transform='translateX(-'+(idx*(cards[0].offsetWidth+22))+'px)'; }
+  function goNext(){ idx=(idx>=n-vis())?0:idx+1; upd(); }
+  function goPrev(){ if(idx>0){idx--;} else{idx=n-vis();} upd(); }
+  pv.addEventListener('click',function(){ goPrev(); resetTimer(); });
+  nx.addEventListener('click',function(){ goNext(); resetTimer(); });
+  window.addEventListener('resize',function(){ if(idx>n-vis()) idx=Math.max(0,n-vis()); upd(); });
+  var timer=setInterval(goNext,3500);
+  function resetTimer(){ clearInterval(timer); timer=setInterval(goNext,3500); }
+}
+initSlider('bt','bp','bn');
+initSlider('dt','dp','dn');
+
+/* ── GALLERY ZOOM ── */
+var zoomModal=document.getElementById('zoomModal');
+var zoomBackdrop=document.getElementById('zoomBackdrop');
+var zoomClose=document.getElementById('zoomClose');
+var zoomStage=document.getElementById('zoomStage');
+var zoomImage=document.getElementById('zoomImage');
+var zoomRange=document.getElementById('zoomRange');
+var zoomReset=document.getElementById('zoomReset');
+var zoomState={scale:1,x:0,y:0,drag:false,sx:0,sy:0,ox:0,oy:0};
+
+function applyZoom(){
+  zoomImage.style.transform='translate(-50%,-50%) translate('+zoomState.x+'px,'+zoomState.y+'px) scale('+zoomState.scale+')';
+}
+function openZoom(src,alt){
+  zoomImage.src=src;
+  zoomImage.alt=alt||'Фото';
+  zoomState.scale=1; zoomState.x=0; zoomState.y=0;
+  zoomRange.value='1';
+  applyZoom();
+  zoomModal.classList.add('open');
+  zoomModal.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeZoom(){
+  zoomModal.classList.remove('open');
+  zoomModal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.gi').forEach(function(card){
+  function openFromCard(){
+    var img=card.querySelector('img');
+    if(img) openZoom(img.src,img.alt);
+  }
+  card.addEventListener('click',openFromCard);
+  card.addEventListener('keydown',function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openFromCard(); } });
+});
+zoomBackdrop.addEventListener('click',closeZoom);
+zoomClose.addEventListener('click',closeZoom);
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeZoom(); });
+zoomRange.addEventListener('input',function(){
+  zoomState.scale=parseFloat(this.value);
+  applyZoom();
+});
+zoomReset.addEventListener('click',function(){
+  zoomState.scale=1; zoomState.x=0; zoomState.y=0; zoomRange.value='1'; applyZoom();
+});
+zoomStage.addEventListener('pointerdown',function(e){
+  if(zoomState.scale<=1) return;
+  zoomState.drag=true;
+  zoomState.sx=e.clientX; zoomState.sy=e.clientY;
+  zoomState.ox=zoomState.x; zoomState.oy=zoomState.y;
+  zoomStage.setPointerCapture(e.pointerId);
+});
+zoomStage.addEventListener('pointermove',function(e){
+  if(!zoomState.drag) return;
+  zoomState.x=zoomState.ox+(e.clientX-zoomState.sx);
+  zoomState.y=zoomState.oy+(e.clientY-zoomState.sy);
+  applyZoom();
+});
+function endDrag(){ zoomState.drag=false; }
+zoomStage.addEventListener('pointerup',endDrag);
+zoomStage.addEventListener('pointercancel',endDrag);
+
+/* ── FORM ── */
+var form=document.getElementById('wform');
+if(form) form.addEventListener('submit',function(e){
+  e.preventDefault();
+  var btn=form.querySelector('.fsubmit');
+  var day=document.getElementById('dt-day');
+  var month=document.getElementById('dt-month');
+  var year=document.getElementById('dt-year');
+  var hiddenDate=document.getElementById('wed-date');
+
+  if(!day.value || !month.value || !year.value){
+    btn.textContent='Выберите дату свадьбы';
+    btn.disabled=false;
+    return;
+  }
+  if(year.value!=='2026' && year.value!=='2027'){
+    btn.textContent='Год только 2026 или 2027';
+    btn.disabled=false;
+    return;
+  }
+
+  hiddenDate.value=day.value.padStart(2,'0')+'.'+month.value.padStart(2,'0')+'.'+year.value;
+  btn.textContent='Отправляем…'; btn.disabled=true;
+  var ctrl=new AbortController();
+  var to=setTimeout(function(){ctrl.abort();},12000);
+  fetch('https://formspree.io/f/meedowad',{
+    method:'POST',body:new FormData(form),headers:{Accept:'application/json'},signal:ctrl.signal
+  }).then(function(r){
+    clearTimeout(to);
+    if(r.ok){ window.location.href='./thank-you-page.html'; }
+    else{ btn.textContent='Ошибка — попробуйте ещё раз'; btn.disabled=false; }
+  }).catch(function(){ clearTimeout(to); btn.textContent='Ошибка соединения, попробуйте ещё раз'; btn.disabled=false; });
+});
+
+
+/* ── COOKIE CONSENT ── */
+var cookieBanner=document.getElementById('cookieBanner');
+var cookieAccept=document.getElementById('cookieAccept');
+if(cookieBanner && cookieAccept){
+  var cookieShown=false;
+  try{ cookieShown=localStorage.getItem('cookieConsent')==='1'; }catch(e){}
+  if(cookieShown){
+    cookieBanner.style.display='none';
+  }else{
+    cookieBanner.classList.add('show');
+  }
+  cookieAccept.addEventListener('click',function(){
+    try{ localStorage.setItem('cookieConsent','1'); }catch(e){}
+    cookieBanner.classList.remove('show');
+    cookieBanner.style.display='none';
+  });
+}
+
+})();
+</script>
+</body>
+</html>
